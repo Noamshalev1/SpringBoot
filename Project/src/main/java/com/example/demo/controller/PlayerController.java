@@ -19,6 +19,7 @@ public class PlayerController {
     public PlayerController(IPlayerService service) {
         this.service = service;
     }
+
     @GetMapping(value = "/{id}", produces = "application/json")
     public String[] getPlayer(@PathVariable String id) {
         return service.getPlayer(id);
@@ -27,5 +28,6 @@ public class PlayerController {
     public List<String[]> getAllPlayers() {
         return service.getAllPlayers();
     }
+
 
 }
