@@ -1,10 +1,10 @@
 package com.example.demo.service;
-
+import com.example.demo.model.Player;
 import java.util.List;
 
 public interface IPlayerService {
-    String[] getPlayer(String id);
+    Player getPlayerById(String id);
 
-    List<String[]> getAllPlayers();
+    List<Player> getAllPlayers();
 
 }
