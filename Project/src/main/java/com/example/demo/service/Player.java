@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.PlayerNotFoundException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,11 +33,21 @@ public class Player {
 
     public List<String[]> getPlayers() {
         Collection<String[]> values = playerMap.values();
-        return new ArrayList<>(values);
+        if (values.isEmpty()){
+            throw new PlayerNotFoundException("No players");
+        }
+        else{
+            return new ArrayList<>(values);
+        }
     }
 
     public String[] getPlayer(String id) {
-        return playerMap.get(id);
+        if (playerMap.get(id) == null){
+            throw new PlayerNotFoundException("Id " + id + " is invalid");
+        }
+        else{
+            return playerMap.get(id);
+        }
 
     }
 }
