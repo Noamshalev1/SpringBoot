@@ -1,5 +1,4 @@
 package com.example.demo.exception;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,18 +7,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handles IllegalArgumentException and IllegalStateException exceptions
+     * @param ex      The RuntimeException that was thrown, typically IllegalArgumentException or IllegalStateException.
+     * @param request The current web request in which the exception occurred.
+     * @return A ResponseEntity containing a custom error message, headers, and the HTTP status code.
+     */
     @ExceptionHandler(value
             = { IllegalArgumentException.class, IllegalStateException.class })
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific";
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+    protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+        String bodyOfResponse = "An error occurred: " + ex.getMessage();
+        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
     /**
@@ -30,6 +32,12 @@ public class RestResponseEntityExceptionHandler
     @ExceptionHandler(PlayerNotFoundException.class)
     protected ResponseEntity<Object> handlePlayerNotFound(PlayerNotFoundException ex, WebRequest request) {
         String bodyOfResponse = "Player not found: " + ex.getMessage();
+        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicatePlayerException.class)
+    protected ResponseEntity<Object> handlePlayerNotFound(DuplicatePlayerException ex, WebRequest request) {
+        String bodyOfResponse = "Duplicate Player: " + ex.getMessage();
         return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 }
