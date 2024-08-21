@@ -1,6 +1,5 @@
 package com.example.demo.service;
-
-import com.example.demo.App;
+import com.example.demo.exception.DuplicatePlayerException;
 import com.example.demo.exception.PlayerNotFoundException;
 import com.example.demo.model.DeadPlayer;
 import com.example.demo.model.Player;
@@ -23,7 +22,7 @@ public class LoadDataService {
     public void loadPlayersData() {
         playerMap = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\PC\\Documents\\GitHub\\SpringBoot\\Project\\src\\main\\resources\\player.csv"))) {
-            String line = br.readLine();
+            String line;
             while ((line = br.readLine()) != null) {
 
                 String[] playerData = line.split(",");
@@ -102,12 +101,47 @@ public class LoadDataService {
 
     public Player getPlayerById(String id){
         if (playerMap.get(id) == null){
-            throw new PlayerNotFoundException("Player with id: " + id +" + doesn't exist");
+            throw new PlayerNotFoundException("Player with id: " + id +" doesn't exist");
         }
         else{
             return playerMap.get(id);
         }
+    }
 
+    /**
+     * Now we can  only save a not-dead player
+     * @param player (send as JSON format and cast to a player)
+     */
+    public void savePlayer(Player player){
+        if (player == null){
+            throw new PlayerNotFoundException("Player object is empty");
+        }
+        else{
+            if (playerMap.get(player.getPlayerID()) == null){
+                playerMap.put(player.getPlayerID(), player);
+            }
+            else{
+                throw new DuplicatePlayerException("Player with id: " + player.getPlayerID() + " is already exist ");
+            }
+        }
+    }
 
+    /**
+     * Now we can only update a not-dead player
+     * @param player (send as JSON format and cast to a player)
+     */
+    public void updatePlayer(Player player){
+        if (player == null){
+            throw new PlayerNotFoundException("Player object is empty");
+        }
+        else{
+            if (playerMap.get(player.getPlayerID()) == null){
+                throw new PlayerNotFoundException("Player with id: " + player.getPlayerID() + " doesn't exist");
+            }
+            else{
+                playerMap.put(player.getPlayerID(), player);
+            }
+        }
     }
 }
+
