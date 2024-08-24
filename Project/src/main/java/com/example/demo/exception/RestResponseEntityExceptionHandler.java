@@ -23,7 +23,6 @@ public class RestResponseEntityExceptionHandler
         String bodyOfResponse = "An error occurred: " + ex.getMessage();
         return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT);
     }
-
     /**
      * In case there is a problem with the player details
      * @param ex the exception
@@ -32,13 +31,21 @@ public class RestResponseEntityExceptionHandler
     @ExceptionHandler(PlayerNotFoundException.class)
     protected ResponseEntity<Object> handlePlayerNotFound(PlayerNotFoundException ex, WebRequest request) {
         String bodyOfResponse = "Player not found: " + ex.getMessage();
-        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(bodyOfResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicatePlayerException.class)
     protected ResponseEntity<Object> handlePlayerNotFound(DuplicatePlayerException ex, WebRequest request) {
         String bodyOfResponse = "Duplicate Player: " + ex.getMessage();
-        return new ResponseEntity<>(bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(bodyOfResponse, HttpStatus.NOT_FOUND);
     }
+
+    //fallback
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<Object> handleException(Exception e){
+        e.printStackTrace();
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
 

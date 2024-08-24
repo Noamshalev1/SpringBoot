@@ -24,12 +24,12 @@ public class PlayerService implements IPlayerService{
 
     @Override
     public void savePlayer(Player player) {
-        this.DAO.savePlayer(player);
+        DAO.savePlayer(player);
     }
 
     @Override
     public void updatePlayer(Player player) {
-        this.DAO.updatePlayer(player);
+        DAO.updatePlayer(player);
     }
 
 }

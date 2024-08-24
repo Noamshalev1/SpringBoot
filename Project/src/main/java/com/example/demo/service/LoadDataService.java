@@ -94,18 +94,14 @@ public class LoadDataService {
         if (values.isEmpty()){
             throw new PlayerNotFoundException("No players");
         }
-        else{
-            return new ArrayList<>(values);
-        }
+        return new ArrayList<>(values);
     }
 
     public Player getPlayerById(String id){
         if (playerMap.get(id) == null){
             throw new PlayerNotFoundException("Player with id: " + id +" doesn't exist");
         }
-        else{
-            return playerMap.get(id);
-        }
+        return playerMap.get(id);
     }
 
     /**
@@ -116,13 +112,11 @@ public class LoadDataService {
         if (player == null){
             throw new PlayerNotFoundException("Player object is empty");
         }
+        if (playerMap.get(player.getPlayerID()) == null){
+            playerMap.put(player.getPlayerID(), player);
+        }
         else{
-            if (playerMap.get(player.getPlayerID()) == null){
-                playerMap.put(player.getPlayerID(), player);
-            }
-            else{
-                throw new DuplicatePlayerException("Player with id: " + player.getPlayerID() + " is already exist ");
-            }
+            throw new DuplicatePlayerException("Player with id: " + player.getPlayerID() + " is already exist ");
         }
     }
 
@@ -134,13 +128,11 @@ public class LoadDataService {
         if (player == null){
             throw new PlayerNotFoundException("Player object is empty");
         }
+        if (playerMap.get(player.getPlayerID()) == null){
+            throw new PlayerNotFoundException("Player with id: " + player.getPlayerID() + " doesn't exist");
+        }
         else{
-            if (playerMap.get(player.getPlayerID()) == null){
-                throw new PlayerNotFoundException("Player with id: " + player.getPlayerID() + " doesn't exist");
-            }
-            else{
-                playerMap.put(player.getPlayerID(), player);
-            }
+            playerMap.put(player.getPlayerID(), player);
         }
     }
 }

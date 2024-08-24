@@ -1,14 +1,29 @@
 package com.example.demo.model;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 
 /**
  * A death player which add more fileds
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class DeadPlayer extends Player{
-
+    @Past
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Date must be in the format YYYY-MM-DD")
     private LocalDate deathDate;
+    @NotBlank
     private String deathCountry;
+    @NotBlank
     private String deathState;
+    @NotBlank
     private String deathCity;
 
     public DeadPlayer(String playerID, LocalDate birthDate, String birthCountry, String birthState,
@@ -30,35 +45,4 @@ public class DeadPlayer extends Player{
         return true;
     }
 
-    public LocalDate getDeathDate(){
-        return this.deathDate;
-    }
-
-    public String getDeathCountry() {
-        return this.deathCountry;
-    }
-
-    public String getDeathState() {
-        return this.deathState;
-    }
-
-    public String getDeathCity() {
-        return this.deathCity;
-    }
-
-    public void setDeathDate(LocalDate deathDate) {
-        this.deathDate = deathDate;
-    }
-
-    public void setDeathCountry(String deathCountry) {
-        this.deathCountry = deathCountry;
-    }
-
-    public void setDeathState(String deathState) {
-        this.deathState = deathState;
-    }
-
-    public void setDeathCity(String deathCity) {
-        this.deathCity = deathCity;
-    }
 }
